@@ -1,6 +1,6 @@
 # ProbabiliPy
 
-ProbabiliPy is a Python library for analysing probability distributions.
+ProbabiliPy is a Python package for analysing probability distributions.
 
 Users can read data from .txt files to instances of the Gaussian, Binomial and Poisson distribution models. The package can be used to:
 
