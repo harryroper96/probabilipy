@@ -13,7 +13,7 @@ class Gaussian(Distribution):
     """
     
     def __init__(self, mu=0, sigma=1):
-        Distribution.__init__(mu, sigma)
+        Distribution.__init__(self, mu, sigma)
     
     def calculate_mean(self):
         
@@ -33,7 +33,7 @@ class Gaussian(Distribution):
     
     def calculate_stdev(self, sample=True):
         
-         """Function to calculate the standard deviation of the data set.
+        """Function to calculate the standard deviation of the data set.
         
         Args:
             sample (bool): whether data set represents a sample or a population
@@ -42,7 +42,6 @@ class Gaussian(Distribution):
             float: standard deviation of the data set
         
         """
-        
         if sample:
             n = float(len(self.data)) - 1
         else:
@@ -52,13 +51,13 @@ class Gaussian(Distribution):
         self.stdev = sigma
         return self.stdev
     
-    def plot_dist(self, bins=50):
+    def plot_dist(self, bins=None):
         
         """Function to plot a histogram of the distribution of the data set using
         matplotlib's pyplot library.
         
         Args:
-            None
+            bins (int): number of bins the histogram should include
         
         Returns:
             None
@@ -86,7 +85,7 @@ class Gaussian(Distribution):
         return (1.0 / (self.stdev * math.sqrt(2 * math.pi))) * \
                 math.e ** (-0.5 * ((x - self.mean) / self.stdev) ** 2)
     
-    def cdf(self, x, interval=False):
+    def cdf(self, x):
         
         """Function to calculate the probability that a random variable in the data set
         will take a value either less than or equal to a given x value or between a
@@ -95,14 +94,13 @@ class Gaussian(Distribution):
         Args:
             x (float or tuple of floats): the x value of interval below/between which to 
                 calculate the probability
-            interval (bool): whether x represents an interval or a single value
         
         Returns:
             float: CDF of the data set's distribution below/between x
         
         """
         
-        if interval:
+        if type(x) is tuple:
             try:
                 assert len(x) == 2, 'x must be a tuple of length 2 to calculate \
                 probability between interval'
@@ -119,3 +117,36 @@ class Gaussian(Distribution):
         
         else:
             return (0.5 * (1.0 + math.erf((x - self.mean) / (self.stdev * math.sqrt(2)))))
+    
+    def __add__(self, other):
+
+        """Function to add together two Gaussian distributions
+
+        Args:
+            other (Gaussian): Gaussian instance
+
+        Returns:
+            Gaussian: Gaussian distribution
+
+           """
+
+        result = Gaussian()
+        result.mean = self.mean + other.mean
+        result.stdev = math.sqrt(self.stdev ** 2 + other.stdev ** 2)
+        
+        return result
+
+
+    def __repr__(self):
+
+        """Function to output the characteristics of the Gaussian instance
+        
+        Args:
+            None
+
+        Returns:
+            string: characteristics of the Gaussian instance
+
+        """
+
+        return "mean {}, standard deviation {}".format(self.mean, self.stdev)

@@ -31,7 +31,7 @@ class Distribution():
             data_list = []
             line = file.readline()
             while line:
-                data_list.append(int(line))
+                data_list.append(float(line))
                 line = file.readline()
         file.close()
         
